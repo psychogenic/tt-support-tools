@@ -10,6 +10,7 @@ if __name__ == "__main__":
     sub_parsers = parser.add_subparsers(dest="command", help="subcommand")
     docsparser = sub_parsers.add_parser('docs')
     fpga_parser = sub_parsers.add_parser('fpga')
+    info_parser = sub_parsers.add_parser('info')
     
     parser.add_argument("--project-dir", help="location of the project", default=".")
     parser.add_argument(
@@ -77,13 +78,14 @@ if __name__ == "__main__":
 
 	
     
-    # documentation
-    docsparser.add_argument(
+    parser.add_argument(
         "--check-docs",
         help="check the documentation part of the yaml",
         action="store_const",
         const=True,
     )
+    
+    # documentation
     docsparser.add_argument(
         "--create-pdf",
         help="create a single page PDF",
@@ -126,6 +128,10 @@ if __name__ == "__main__":
         default='tt_fpga',
         required=False
     )
+    
+    info_parser.add_argument('--clock_hz', required=False, action='store_true', help='Get the specified clock rate')
+    info_parser.add_argument('--title', required=False, action='store_true', help='Get the specified project title')
+    
 
     args = parser.parse_args()
 
@@ -148,7 +154,16 @@ if __name__ == "__main__":
     project.post_clone_setup()
 
     # handle the options
-
+    if args.command == 'info':
+        if args.clock_hz:
+            print(project.info.clock_hz, end='')
+        if args.title:
+            print(project.info.title, end='')
+    
+    
+    if args.check_docs:
+        project.check_docs()
+        
     if args.print_cell_summary or args.print_cell_category:
         project.summarize()
 
@@ -169,9 +184,8 @@ if __name__ == "__main__":
 
     if args.harden:
         project.harden()
+
     if args.command == 'docs':
-        if args.check_docs:
-            project.check_docs()
             
         if args.create_pdf:
             project.create_pdf()
