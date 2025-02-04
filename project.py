@@ -163,7 +163,8 @@ class Project:
     def run_yosys(self, command: str, no_output: bool = False):
         env = os.environ.copy()
         env["YOSYS_CMD"] = command
-        yosys_cmd = 'yowasp-yosys -qp "$YOSYS_CMD"'
+        yosys_cmd = 'yosys -qp "$YOSYS_CMD"'
+        # yosys_cmd = 'yowasp-yosys -qp "$YOSYS_CMD"'
         return subprocess.run(yosys_cmd, shell=True, env=env, capture_output=no_output)
 
     def check_ports(self, include_power_ports: bool = False):
@@ -782,7 +783,7 @@ class Project:
         seed = os.getenv("TT_FPGA_SEED", "10")
         freq = os.getenv("TT_FPGA_FREQ", "12")
         
-        pcf_file = f'{args.board}_top.pcf'
+        pcf_file = f'{self.args.board}_top.pcf'
 
         nextpnr_cmd = f"nextpnr-ice40 -l {build_dir}/02-nextpnr.log --pcf-allow-unconstrained --seed {seed} --freq {freq} --package sg48 --up5k --asc {build_dir}/tt_fpga.asc --pcf {SCRIPT_DIR}/fpga/{pcf_file} --json {build_dir}/tt_fpga.json"
         logging.debug(nextpnr_cmd)
