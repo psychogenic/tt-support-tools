@@ -118,6 +118,7 @@ tinycss2==1.4.0
     # via
     #   cairosvg
     #   cssselect2
+uf2utils==0.9.4
 urllib3==2.2.3
     # via requests
 virtualenv==20.28.0
@@ -136,3 +137,4 @@ yowasp-yosys==0.48.0.0.post834
     # via tt-support-tools (pyproject.toml)
 zstandard==0.23.0
     # via volare
+
