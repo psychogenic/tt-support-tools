@@ -163,8 +163,8 @@ class Project:
     def run_yosys(self, command: str, no_output: bool = False):
         env = os.environ.copy()
         env["YOSYS_CMD"] = command
-        yosys_cmd = 'yosys -qp "$YOSYS_CMD"'
-        # yosys_cmd = 'yowasp-yosys -qp "$YOSYS_CMD"'
+        # yosys_cmd = 'yosys -qp "$YOSYS_CMD"'
+        yosys_cmd = 'yowasp-yosys -qp "$YOSYS_CMD"'
         return subprocess.run(yosys_cmd, shell=True, env=env, capture_output=no_output)
 
     def check_ports(self, include_power_ports: bool = False):
