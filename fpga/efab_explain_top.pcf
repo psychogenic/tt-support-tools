@@ -1,0 +1,69 @@
+#
+# Pinmap for the Efabless Explain ASIC simulator
+#
+
+
+# Clock
+set_io -nowarn clk_fpga 35 # on-board osc, DNP
+
+
+# SPI in slave mode
+set_io -nowarn spi_mosi 17
+set_io -nowarn spi_miso 14
+set_io -nowarn spi_clk  15
+set_io -nowarn spi_cs_n 16
+
+
+# Buttons
+set_io -nowarn -pullup no user_sw1 13
+
+# UART
+
+set_io -nowarn -pullup no uart_rx  19
+set_io -nowarn -pullup no uart_tx  18
+
+
+
+
+
+# Leds
+set_io -nowarn rgb[0] 39
+set_io -nowarn rgb[1] 40
+set_io -nowarn rgb[2] 41
+
+
+# "project clock"
+set_io -nowarn  clk     20 # RP2 clocking
+set_io -nowarn  rst_n   12 # usr sw 2
+
+
+# I/O
+# pmod buttons
+set_io -nowarn ui_in[0]       23
+set_io -nowarn ui_in[1]       25
+set_io -nowarn ui_in[2]       26
+set_io -nowarn ui_in[3]       27
+set_io -nowarn ui_in[4]       28
+set_io -nowarn ui_in[5]       31
+set_io -nowarn ui_in[6]       32
+set_io -nowarn ui_in[7]       34
+
+
+set_io -nowarn uo_out[0]      10
+set_io -nowarn uo_out[1]      11
+set_io -nowarn uo_out[2]      2
+set_io -nowarn uo_out[3]      3
+set_io -nowarn uo_out[4]      4
+set_io -nowarn uo_out[5]      9
+set_io -nowarn uo_out[6]      6
+set_io -nowarn uo_out[7]      48
+
+
+set_io -nowarn uio[0]        47  
+set_io -nowarn uio[1]        45
+set_io -nowarn uio[2]        43
+set_io -nowarn uio[3]        37 # gb
+set_io -nowarn uio[4]        46
+set_io -nowarn uio[5]        44
+set_io -nowarn uio[6]        42
+set_io -nowarn uio[7]        38

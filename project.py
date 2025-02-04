@@ -757,7 +757,7 @@ class Project:
 
     def create_fpga_bitstream(self):
         logging.info(f"Creating FPGA bitstream for {self}")
-
+        
         with open(os.path.join(SCRIPT_DIR, "fpga/tt_fpga_top.v"), "r") as f:
             top_module_template = f.read()
 
@@ -781,8 +781,10 @@ class Project:
 
         seed = os.getenv("TT_FPGA_SEED", "10")
         freq = os.getenv("TT_FPGA_FREQ", "12")
+        
+        pcf_file = f'{args.board}_top.pcf'
 
-        nextpnr_cmd = f"nextpnr-ice40 -l {build_dir}/02-nextpnr.log --pcf-allow-unconstrained --seed {seed} --freq {freq} --package sg48 --up5k --asc {build_dir}/tt_fpga.asc --pcf {SCRIPT_DIR}/fpga/tt_fpga_top.pcf --json {build_dir}/tt_fpga.json"
+        nextpnr_cmd = f"nextpnr-ice40 -l {build_dir}/02-nextpnr.log --pcf-allow-unconstrained --seed {seed} --freq {freq} --package sg48 --up5k --asc {build_dir}/tt_fpga.asc --pcf {SCRIPT_DIR}/fpga/{pcf_file} --json {build_dir}/tt_fpga.json"
         logging.debug(nextpnr_cmd)
         p = subprocess.run(nextpnr_cmd, shell=True)
         if p.returncode != 0:

@@ -7,6 +7,10 @@ from project import Project
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TT setup")
+    sub_parsers = parser.add_subparsers(dest="command", help="subcommand")
+    docsparser = sub_parsers.add_parser('docs')
+    fpga_parser = sub_parsers.add_parser('fpga')
+    
     parser.add_argument("--project-dir", help="location of the project", default=".")
     parser.add_argument(
         "--yaml", help="the project's yaml configuration file", default="info.yaml"
@@ -71,26 +75,28 @@ if __name__ == "__main__":
         const=True,
     )
 
+	
+    
     # documentation
-    parser.add_argument(
+    docsparser.add_argument(
         "--check-docs",
         help="check the documentation part of the yaml",
         action="store_const",
         const=True,
     )
-    parser.add_argument(
+    docsparser.add_argument(
         "--create-pdf",
         help="create a single page PDF",
         action="store_const",
         const=True,
     )
-    parser.add_argument(
+    docsparser.add_argument(
         "--create-svg",
         help="create a svg of the GDS layout",
         action="store_const",
         const=True,
     )
-    parser.add_argument(
+    docsparser.add_argument(
         "--create-png",
         help="create a png of the GDS layout",
         action="store_const",
@@ -112,11 +118,13 @@ if __name__ == "__main__":
     )
 
     # FPGA
-    parser.add_argument(
-        "--create-fpga-bitstream",
-        help="create the FPGA bitstream",
-        action="store_const",
-        const=True,
+    fpga_parser.add_argument('--create-bitstream', required=False, action='store_true', help='Generate FPGA bitstream')
+    fpga_parser.add_argument(
+        "--board",
+        help="select the FPGA board",
+        choices=('tt_fpga', 'efab_explain'),
+        default='tt_fpga',
+        required=False
     )
 
     args = parser.parse_args()
@@ -140,8 +148,6 @@ if __name__ == "__main__":
     project.post_clone_setup()
 
     # handle the options
-    if args.check_docs:
-        project.check_docs()
 
     if args.print_cell_summary or args.print_cell_category:
         project.summarize()
@@ -163,15 +169,18 @@ if __name__ == "__main__":
 
     if args.harden:
         project.harden()
+    if args.command == 'docs':
+        if args.check_docs:
+            project.check_docs()
+            
+        if args.create_pdf:
+            project.create_pdf()
 
-    if args.create_pdf:
-        project.create_pdf()
+        if args.create_png:
+            project.create_png()
 
-    if args.create_png:
-        project.create_png()
+        if args.create_svg:
+            project.create_svg()
 
-    if args.create_svg:
-        project.create_svg()
-
-    if args.create_fpga_bitstream:
+    if args.command == 'fpga' and args.create_bitstream:
         project.create_fpga_bitstream()
